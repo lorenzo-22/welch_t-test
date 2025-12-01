@@ -89,7 +89,7 @@ def main():
 
     parser.add_argument('--data.matrix', type=str,
                         help='csv dataframe with proteins as rows and samples as columns.', required = True)
-    parser.add_argument('--data.true_labels', type=str,
+    parser.add_argument('--data.true_sample_labels', type=str,
                         help='csv file with true labels.', required = True)
     parser.add_argument('--output_dir', type=str,
                         help='output directory to store data files.', 
@@ -107,7 +107,7 @@ def main():
 
     print('Loading data')
     data = load_dataset(getattr(args, 'data.matrix'))
-    labels = load_labels(getattr(args, 'data.true_labels'))
+    labels = load_labels(getattr(args, 'data.true_sample_labels'))
 
     print('Running Welch t-test')
     results = welch_ttest_df(data, labels)
