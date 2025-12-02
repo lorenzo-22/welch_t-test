@@ -37,21 +37,6 @@ def load_labels(labels_file):
     labels = data.iloc[:, 0].to_numpy()
     return labels
 
-# def get_labels(data):
-#     # Make sure there is something in the index
-#     if len(data.index) == 0:
-#         raise ValueError("Data index is empty.")
-
-#     labels = [0 if ".N" in name else 1 for name in data.index]
-
-#     # Warn if there are only one class (case or control) in the data.
-#     if len(set(labels)) < 2:
-#         warnings.warn("Labels contain only one class.", UserWarning)
-    
-#     print(f'Found {labels.count(0)} controls and {labels.count(1)} cases in the data.')
-
-#     return labels
-
 
 def welch_ttest_df(data, labels):
     """
@@ -94,7 +79,7 @@ def main():
     parser.add_argument('--output_dir', type=str,
                         help='output directory to store data files.', 
                         required=True)
-    # parser.add_argument('--name', type=str, help='name of the dataset', default='clustbench')
+    parser.add_argument('--name', type=str, help='name of the dataset', default='welch')
     # parser.add_argument('--method', type=str,
     #                     help='sklearn method',
     #                     required = True)
@@ -104,6 +89,8 @@ def main():
     except:
         parser.print_help()
         sys.exit(0)
+    
+    name = getattr(args, 'name')
 
     print('Loading data')
     data = load_dataset(getattr(args, 'data.matrix'))
@@ -112,8 +99,7 @@ def main():
     print('Running Welch t-test')
     results = welch_ttest_df(data, labels)
 
-    results.to_csv(os.path.join(args.output_dir, "results_welch_ttest.csv"))
-    print(f'Welch t-test results are stored in {os.path.join(args.output_dir, "results_welch_ttest.csv")}')
+    results.to_csv(os.path.join(args.output_dir, f"{name}_results.csv"))
 
 if __name__ == "__main__":
     main()
