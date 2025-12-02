@@ -110,7 +110,7 @@ def main():
     print('Running Welch t-test')
     results = welch_ttest_df(data, labels)
 
-    output_file = os.path.join(args.output_dir, "results.csv")
+    output_file = os.path.join(args.output_dir, f"{args.name}_results.csv")
     results.to_csv(output_file, index=False)
     print(f'Welch t-test results stored in {output_file}')
 
