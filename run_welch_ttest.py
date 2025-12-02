@@ -94,7 +94,7 @@ def main():
     parser.add_argument('--output_dir', type=str,
                         help='output directory to store data files.', 
                         required=True)
-    # parser.add_argument('--name', type=str, help='name of the dataset', default='clustbench')
+    parser.add_argument('--name', type=str, help='name of the dataset', required=True)
     # parser.add_argument('--method', type=str,
     #                     help='sklearn method',
     #                     required = True)
@@ -112,10 +112,9 @@ def main():
     print('Running Welch t-test')
     results = welch_ttest_df(data, labels)
 
-    results.to_csv(os.path.join(args.output_dir, "results.csv"))
-
-    #results.to_csv(os.path.join(args.output_dir, "results_welch_ttest.csv"))
-    print(f'Welch t-test results are stored in {os.path.join(args.output_dir, "results_welch_ttest.csv")}')
+    output_file = os.path.join(args.output_dir, f"{args.name}_results.csv")
+    results.to_csv(output_file, index=False)
+    print(f'Welch t-test results are stored in {output_file}')
 
 if __name__ == "__main__":
     main()
