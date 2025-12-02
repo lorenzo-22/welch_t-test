@@ -33,6 +33,7 @@ def load_dataset(data_file):
 def load_labels(labels_file):
     data = pd.read_csv(labels_file, index_col=0, header=None)
     labels = data.iloc[:, 0].to_numpy()
+    labels = labels.astype(int) 
     return labels
 
 
@@ -54,8 +55,8 @@ def welch_ttest_df(data, labels):
         col = X[:, col_idx]
         
         # Split into groups
-        group0 = col[labels == '0']
-        group1 = col[labels == '1']
+        group0 = col[labels == 0]
+        group1 = col[labels == 1]
         
         # Run Welch's t-test (unequal variance)
         t_stat, p_val = ttest_ind(group0, group1, equal_var=False)
