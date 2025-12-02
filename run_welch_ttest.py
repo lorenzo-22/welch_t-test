@@ -8,7 +8,7 @@ Loads:
 
 Outputs:
   A CSV-like matrix:
-      header: protein, effect_size, p-value
+      header: ID, effect_size, p_value
       rows:   per-protein results
 """
 
@@ -75,7 +75,7 @@ def welch_ttest_df(data, labels):
         # Run Welch's t-test (unequal variance)
         t_stat, p_val = ttest_ind(group0, group1, equal_var=False)
         
-        results.append({'protein': f'{data.columns[col_idx]}', 'effect_size': t_stat, 'p_value': p_val})
+        results.append({'ID': f'{data.columns[col_idx]}', 'effect_size': t_stat, 'p_value': p_val})
 
     df = pd.DataFrame(results)
     return df
