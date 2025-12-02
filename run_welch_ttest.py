@@ -94,6 +94,7 @@ def main():
     parser.add_argument('--output_dir', type=str,
                         help='output directory to store data files.', 
                         required=True)
+    parser.add_argument('--name', type=str, help='dataset name (ignored, for compatibility)', required=False)
     # parser.add_argument('--method', type=str,
     #                     help='sklearn method',
     #                     required = True)
