@@ -8,7 +8,7 @@ Loads:
 
 Outputs:
   A CSV-like matrix:
-      header: protein, effect_size, p-value
+      header: ID, effect_size, p_value
       rows:   per-protein results
 """
 
@@ -31,9 +31,7 @@ def load_dataset(data_file):
     return data
 
 def load_labels(labels_file):
-    data = (
-        pd.read_csv(labels_file, index_col=0)
-    )
+    data = pd.read_csv(labels_file, index_col=0, header=None)
     labels = data.iloc[:, 0].to_numpy()
     return labels
 
@@ -62,7 +60,7 @@ def welch_ttest_df(data, labels):
         # Run Welch's t-test (unequal variance)
         t_stat, p_val = ttest_ind(group0, group1, equal_var=False)
         
-        results.append({'protein': f'{data.columns[col_idx]}', 'effect_size': t_stat, 'p_value': p_val})
+        results.append({'ID': f'{data.columns[col_idx]}', 'effect_size': t_stat, 'p_value': p_val})
 
     df = pd.DataFrame(results)
     return df
@@ -79,7 +77,8 @@ def main():
     parser.add_argument('--output_dir', type=str,
                         help='output directory to store data files.', 
                         required=True)
-    parser.add_argument('--name', type=str, help='name of the dataset', default='welch')
+
+    parser.add_argument('--name', type=str, help='dataset name (ignored, for compatibility)', required=False)
     # parser.add_argument('--method', type=str,
     #                     help='sklearn method',
     #                     required = True)
@@ -99,7 +98,9 @@ def main():
     print('Running Welch t-test')
     results = welch_ttest_df(data, labels)
 
-    results.to_csv(os.path.join(args.output_dir, f"{name}_results.csv"))
+    output_file = os.path.join(args.output_dir, f"{args.name}_results.csv")
+    results.to_csv(output_file, index=False)
+    print(f'Welch t-test results stored in {output_file}')
 
 if __name__ == "__main__":
     main()
