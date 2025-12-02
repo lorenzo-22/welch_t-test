@@ -35,21 +35,6 @@ def load_labels(labels_file):
     labels = data.iloc[:, 0].to_numpy()
     return labels
 
-# def get_labels(data):
-#     # Make sure there is something in the index
-#     if len(data.index) == 0:
-#         raise ValueError("Data index is empty.")
-
-#     labels = [0 if ".N" in name else 1 for name in data.index]
-
-#     # Warn if there are only one class (case or control) in the data.
-#     if len(set(labels)) < 2:
-#         warnings.warn("Labels contain only one class.", UserWarning)
-    
-#     print(f'Found {labels.count(0)} controls and {labels.count(1)} cases in the data.')
-
-#     return labels
-
 
 def welch_ttest_df(data, labels):
     """
@@ -69,8 +54,8 @@ def welch_ttest_df(data, labels):
         col = X[:, col_idx]
         
         # Split into groups
-        group0 = col[labels == 0]
-        group1 = col[labels == 1]
+        group0 = col[labels == '0']
+        group1 = col[labels == '1']
         
         # Run Welch's t-test (unequal variance)
         t_stat, p_val = ttest_ind(group0, group1, equal_var=False)
@@ -92,6 +77,7 @@ def main():
     parser.add_argument('--output_dir', type=str,
                         help='output directory to store data files.', 
                         required=True)
+
     parser.add_argument('--name', type=str, help='dataset name (ignored, for compatibility)', required=False)
     # parser.add_argument('--method', type=str,
     #                     help='sklearn method',
@@ -102,6 +88,8 @@ def main():
     except:
         parser.print_help()
         sys.exit(0)
+    
+    name = getattr(args, 'name')
 
     print('Loading data')
     data = load_dataset(getattr(args, 'data.matrix'))
