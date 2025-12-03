@@ -34,7 +34,7 @@ def load_labels(labels_file):
     data = pd.read_csv(labels_file, index_col=0)
     print(data)
     print(data.shape)
-    labels = data.to_numpy()
+    labels = data.iloc[:, 0].to_numpy()
     labels = labels.astype(int)
     return labels
 
