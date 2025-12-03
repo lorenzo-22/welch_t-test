@@ -33,7 +33,7 @@ def load_dataset(data_file):
 def load_labels(labels_file):
     data = pd.read_csv(labels_file, index_col=0)
     labels = data.iloc[:, 0].to_numpy()
-    labels = labels.astype(int)
+    # labels = labels.astype(int)
     return labels
 
 
