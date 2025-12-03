@@ -31,7 +31,9 @@ def load_dataset(data_file):
     return data
 
 def load_labels(labels_file):
-    data = pd.read_csv(labels_file, index_col=0, header = False)
+    data = pd.read_csv(labels_file, index_col=0, header = None)
+    print(data)
+    print(data.shape)
     labels = data.iloc[:, 0].to_numpy()
     labels = labels.astype(int)
     return labels
@@ -61,7 +63,7 @@ def welch_ttest_df(data, labels):
         # Run Welch's t-test (unequal variance)
         t_stat, p_val = ttest_ind(group0, group1, equal_var=False, nan_policy='omit')
         
-        results.append({'Name': f'{data.columns[col_idx]}', 'Effect.Size': t_stat, 'P.value': p_val})
+        results.append({'ID': f'{data.columns[col_idx]}', 'effect_size': t_stat, 'p_value': p_val})
 
     df = pd.DataFrame(results)
     return df
@@ -91,18 +93,11 @@ def main():
 
     print('Loading data')
     data = load_dataset(getattr(args, 'data.matrix'))
-    print('data')
-    print(data.shape)
-    print(data.head())
 
     labels = load_labels(getattr(args, 'data.true_labels'))
-    print('labels')
-    print(len(labels))
 
     print('Running Welch t-test')
     results = welch_ttest_df(data, labels)
-    print('results')
-    print(results.head())
 
     output_file = os.path.join(args.output_dir, f"{args.name}_results.csv")
     results.to_csv(output_file, index=False)
