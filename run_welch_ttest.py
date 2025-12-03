@@ -33,12 +33,13 @@ def load_dataset(data_file):
     return data
 
 def load_labels(labels_file):
-    data = pd.read_csv(labels_file, index_col=0)
+    data = pd.read_csv(labels_file, index_col=0, header=None)
     print(data)
     print(data.shape)
     labels = data.iloc[:, 0].to_numpy()
+    print(f'load labels {labels.shape}')
     print(labels)
-    labels = labels.astype(int)
+    # labels = labels.astype(int)
     return labels
 
 
@@ -50,6 +51,8 @@ def welch_ttest_df(data, labels):
     Returns:
         pandas DataFrame with t-statistics and p-values for each column
     """
+    print(labels.shape)
+    print(f'labels in welch labels {labels.shape}')
 
     X = np.asarray(data)
     labels = np.asarray(labels)
