@@ -28,6 +28,8 @@ def load_dataset(data_file):
 )
     if data.ndim != 2:
         raise ValueError("Invalid data structure: data.matrix must be 2D")
+    
+    print(data.shape)
     return data
 
 def load_labels(labels_file):
@@ -35,6 +37,7 @@ def load_labels(labels_file):
     print(data)
     print(data.shape)
     labels = data.iloc[:, 0].to_numpy()
+    print(labels)
     labels = labels.astype(int)
     return labels
 
@@ -50,6 +53,16 @@ def welch_ttest_df(data, labels):
 
     X = np.asarray(data)
     labels = np.asarray(labels)
+
+    # DEBUG: check shapes
+    print("Data shape:", X.shape)
+    print("Labels shape:", labels.shape)
+    
+    if X.shape[0] != labels.shape[0]:
+        raise ValueError(
+            f"Mismatch: number of samples in data ({X.shape[0]}) "
+            f"does not match number of labels ({labels.shape[0]})"
+        )
     
     results = []
 
