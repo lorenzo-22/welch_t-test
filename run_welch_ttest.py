@@ -33,7 +33,7 @@ def load_dataset(data_file):
 def load_labels(labels_file):
     data = pd.read_csv(labels_file, index_col=0, header = None)
     labels = data.iloc[:, 0].to_numpy()
-    # labels = labels.astype(int)
+    labels = labels.astype(int)
     return labels
 
 
@@ -80,9 +80,6 @@ def main():
                         required=True)
 
     parser.add_argument('--name', type=str, help='dataset name (ignored, for compatibility)', required=False)
-    # parser.add_argument('--method', type=str,
-    #                     help='sklearn method',
-    #                     required = True)
 
     try:
         args = parser.parse_args()
