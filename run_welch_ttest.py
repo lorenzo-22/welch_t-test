@@ -76,8 +76,8 @@ def welch_ttest_df(data, labels):
         group0 = col[labels ==0]
         group1 = col[labels ==1]
         
-        # Run Welch's t-test (unequal variance)
-        t_stat, p_val = ttest_ind(group0, group1, equal_var=False, nan_policy='omit')
+        # Run Welch's t-test (unequal variance) - group1 - group0 (A - B)
+        t_stat, p_val = ttest_ind(group1, group0, equal_var=False, nan_policy='omit')
         
         results.append({'ID': f'{data.columns[col_idx]}', 'effect_size': t_stat, 'p_value': p_val})
 
